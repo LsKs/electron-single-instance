@@ -24,7 +24,10 @@ exports.ensureSingleInstance = function (appName, mainWindow) {
             try {
                 fs.unlinkSync(socket);
             } catch (e) {
-                if (e.code !== 'ENOENT') {
+                if (e.code === 'EPERM') {
+                    socket += '-' + process.env.USERNAME;
+                }
+                else if (e.code !== 'ENOENT') {
                     throw e;
                 }
             }
